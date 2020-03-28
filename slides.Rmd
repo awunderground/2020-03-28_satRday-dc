@@ -140,6 +140,20 @@ knitr::include_graphics("www/images/rmarkdown.png")
 * Code
 * Code output
 
+## .Rmd
+
+> * Text and images
+> * Code
+> * Code output
+
+<br>
+
+```{r out.width = "150%"}
+include_graphics("www/images/rmarkdownflow.png")
+```
+
+[R4DS](https://r4ds.had.co.nz/r-markdown.html)
+
 ## Three ingredients for fact sheets/pages
 
 1) Data structure
@@ -157,7 +171,7 @@ statedata %>%
   knitr::kable()
 ```
 
-* Typically with one row per fact sheet/page
+* Typically one row per fact sheet/page
 
 ## 2) Parameterized .Rmd template
 
@@ -171,7 +185,28 @@ params:
 ---
 ```
 
-Parameters can then be used throughout the document:
+`params$state` can be used anywhere in the document as `"Alabama"`.
+
+First, use the parameters to filter the big data structure to just data for an individual state or locality.
+
+```{r echo = TRUE, eval = FALSE}
+data <- data %>%
+  filter(state == params$state)
+```
+
+## 2) Parameterized .Rmd template
+
+```
+---
+params:
+  state: "Alabama"
+  year: 2016
+---
+```
+
+Now, we can use `data$<variable>` for the state/locality specific variables and `params$<parameter>` throughout the document:
+
+<br>
 
 ```
 There were 'r data$fatalities' traffic fatalities in 'r params$state' in 'r params$year'. 
@@ -181,6 +216,8 @@ There were <font color="#1696d2">1,038</font> traffic fatalities in <font color=
 
 ## 2) Parameterized .Rmd template
 
+Data viz!
+
 ```{r image_grobs, fig.show = "hold", out.width = "30%", fig.align = "default"}
 knitr::include_graphics("www/images/urbnthemes.png")
 knitr::include_graphics("www/images/ggplot2.png")
@@ -189,9 +226,20 @@ knitr::include_graphics("www/images/urbnmapr.png")
 
 ## 2) Parameterized .Rmd template
 
-* LaTeX for .pdf
-* CSS for .html
-* CSS for .md
+> * LaTeX for .pdf
+
+* preamble.tex
+* general document styles
+* LaTeX macros
+    * `urbntitle{}`
+    * `urbnboilerplate{}`
+
+## 2) Parameterized .Rmd template
+
+> * CSS for .html
+> * CSS for .md
+
+* styles.css
 
 ## 3) Iterating script
 
@@ -213,17 +261,36 @@ runs %>%
   pwalk(rmarkdown::render, input = "template.Rmd", output_dir = "factsheets")
 ```
 
+## 3) Iterating script
+
+TIP! Don't use `NA` in a YAML header.
+
+```
+---
+params:
+  state: "Alabama"
+  year: 2016
+---
+```
+
 ## [Fact Sheet Tool](https://github.com/UrbanInstitute/rmarkdown-factsheets)
 
 ## [Fact Page Tool](https://github.com/UI-Research/rmarkdown-fact-pages)
 
-## Process
+## Overall Process
 
 1) Why fact sheets? 
-2) Create a Word template 
-3) Create and iterate the .Rmd
-4) Quality control
-5) Create a home for the fact sheets
+2) Create a Word/Google Doc template (if collaborating)
+3) Recreate the template for one iteration in .Rmd
+4) Iterate the .Rmd
+5) Quality control
+6) Create a home for the fact sheets
+
+## Takeaways
+
+* Visually consistent
+* Accurate
+* Easy to update
 
 # Data@Urban
 
