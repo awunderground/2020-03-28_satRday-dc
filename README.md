@@ -1,10 +1,3 @@
 # Iterating Branded Fact Sheets and Web Pages With R Markdown
 
-Slides
-
-
-
-## Examples
-
-* SLFI
-
+[Slides](https://awunderground.github.io/20200328_satRday-dc/slides)
